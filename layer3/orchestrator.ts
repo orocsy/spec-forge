@@ -242,7 +242,7 @@ export async function orchestrate(options: OrchestrateOptions): Promise<Orchestr
     // `postinstall` lifecycle script — pnpm/npm/yarn all honor it.
     // Integrations declare such commands in their `merge/package.json`
     // under `scripts.postinstall`; no custom executor needed here.
-    // (LuxeBook precedent: apps/api uses this exact pattern.)
+    // (real-world precedent: standard NestJS Prisma setup uses this pattern.)
   }
 
   // ── B6: finalise ─────────────────────────────────────────────────

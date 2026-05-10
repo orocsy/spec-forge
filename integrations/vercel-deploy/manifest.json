@@ -1,14 +1,14 @@
 {
-  "name": "vercel-deploy",
-  "category": "observability",
-  "version": "1.0.0",
-  "description": "Vercel deployment config for Next.js. Adds vercel.json with security headers (X-Frame-Options, X-Content-Type-Options, X-XSS-Protection, Referrer-Policy), framework hint, and build/install commands. Pattern source: LuxeBook apps/booking/vercel.json + apps/admin/vercel.json.\n\nDeploy via: `vercel` (or push to a Vercel-linked git branch).",
-  "depends_on_integrations": ["next-app"],
-  "depends_on_packages": {},
-  "files_owned": [
-    "vercel.json"
-  ],
-  "verification": {
-    "dev": "test -f vercel.json && echo vercel-config-present"
-  }
+ "name": "vercel-deploy",
+ "category": "observability",
+ "version": "1.0.0",
+ "description": "Vercel deployment config for Next.js. Adds vercel.json with security headers (X-Frame-Options, X-Content-Type-Options, X-XSS-Protection, Referrer-Policy), framework hint, and build/install commands. Pattern: production-tested.json + apps/admin/vercel.json.\n\nDeploy via: `vercel` (or push to a Vercel-linked git branch).",
+ "depends_on_integrations": ["next-app"],
+ "depends_on_packages": {},
+ "files_owned": [
+ "vercel.json"
+ ],
+ "verification": {
+ "dev": "test -f vercel.json && echo vercel-config-present"
+ }
 }

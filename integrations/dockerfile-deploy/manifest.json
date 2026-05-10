@@ -1,15 +1,15 @@
 {
-  "name": "dockerfile-deploy",
-  "category": "observability",
-  "version": "1.0.0",
-  "description": "Production Dockerfile for Next.js apps. Multi-stage (builder + runner), node:20-alpine base, OpenSSL for Prisma engine detection, non-root user (uid 1001), HEALTHCHECK, frozen-lockfile install. Schema is copied BEFORE install so the `postinstall` (prisma generate) hook can find it — a LuxeBook landmine learned the hard way.\n\nPattern source: LuxeBook apps/api/Dockerfile (verbatim shape, simplified for single-package projects).\n\nBuild: `docker build -t {{project.name}} .`\nRun: `docker run -p 3000:3000 --env-file .env.local {{project.name}}`",
-  "depends_on_integrations": ["next-app"],
-  "depends_on_packages": {},
-  "files_owned": [
-    "Dockerfile",
-    ".dockerignore"
-  ],
-  "verification": {
-    "dev": "docker --version"
-  }
+ "name": "dockerfile-deploy",
+ "category": "observability",
+ "version": "1.0.0",
+ "description": "Production Dockerfile for Next.js apps. Multi-stage (builder + runner), node:20-alpine base, OpenSSL for Prisma engine detection, non-root user (uid 1001), HEALTHCHECK, frozen-lockfile install. Schema is copied BEFORE install so the `postinstall` (prisma generate) hook can find it — a landmine real projects have hit.\n\nPattern source: a production NestJS Dockerfile (verbatim shape, simplified for single-package projects).\n\nBuild: `docker build -t {{project.name}} .`\nRun: `docker run -p 3000:3000 --env-file .env.local {{project.name}}`",
+ "depends_on_integrations": ["next-app"],
+ "depends_on_packages": {},
+ "files_owned": [
+ "Dockerfile",
+ ".dockerignore"
+ ],
+ "verification": {
+ "dev": "docker --version"
+ }
 }

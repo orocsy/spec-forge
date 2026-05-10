@@ -1,4 +1,4 @@
-# Dependencies (LuxeBook pattern: include .pnpm-store for monorepos)
+# Dependencies (common monorepo pattern)
 node_modules
 .pnpm-store
 

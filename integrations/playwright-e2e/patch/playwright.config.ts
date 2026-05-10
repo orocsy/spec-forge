@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 /**
  * Playwright config — headed by default in local dev so you SEE the
- * browser open and step through your flow (LuxeBook learning, Apr 14:
+ * browser open and step through your flow (a real-world learning:
  * "Run E2E headed, I want to see the browser"). CI overrides via
  * PLAYWRIGHT_HEADLESS=1 — see scripts/test:e2e:ci.
  *

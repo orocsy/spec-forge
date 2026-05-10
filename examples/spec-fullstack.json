@@ -1,34 +1,34 @@
 {
-  "meta": {
-    "name": "fullstack-demo",
-    "description": "fullstack web app: Next 15 + Prisma + Neon Postgres + Tailwind 4 + Vitest, scaffolded by dev-pipeline",
-    "version": "0.1.0",
-    "spec_schema_version": 1
-  },
-  "features": [
-    {
-      "id": "F1",
-      "title": "render the home page",
-      "done_when": ["GET / returns 200 with the project name in the body"]
-    },
-    {
-      "id": "F2",
-      "title": "connect to a Postgres database",
-      "done_when": ["DATABASE_URL is read from env, prisma generate succeeds"]
-    },
-    {
-      "id": "F3",
-      "title": "lint + format + test pass on a fresh checkout",
-      "done_when": ["pnpm lint, pnpm format:check, and pnpm test all exit 0"]
-    }
-  ],
-  "integrations": [
-    { "name": "nodejs-typescript-base", "category": "observability", "version": "1.0.0" },
-    { "name": "next-app",                "category": "observability", "version": "16.0.0" },
-    { "name": "tailwind-v4",            "category": "observability", "version": "1.0.0" },
-    { "name": "prisma",                 "category": "database",      "version": "1.0.0" },
-    { "name": "postgres-neon",          "category": "database",      "version": "1.0.0" },
-    { "name": "vitest",                 "category": "observability", "version": "1.0.0" },
-    { "name": "eslint-prettier",        "category": "observability", "version": "1.0.0" }
-  ]
+ "meta": {
+ "name": "fullstack-demo",
+ "description": "fullstack web app: Next 16 + Prisma + Neon Postgres + Tailwind 4 + Vitest, scaffolded by spec-forge",
+ "version": "0.1.0",
+ "spec_schema_version": 1
+ },
+ "features": [
+ {
+ "id": "F1",
+ "title": "render the home page",
+ "done_when": ["GET / returns 200 with the project name in the body"]
+ },
+ {
+ "id": "F2",
+ "title": "connect to a Postgres database",
+ "done_when": ["DATABASE_URL is read from env, prisma generate succeeds"]
+ },
+ {
+ "id": "F3",
+ "title": "lint + format + test pass on a fresh checkout",
+ "done_when": ["pnpm lint, pnpm format:check, and pnpm test all exit 0"]
+ }
+ ],
+ "integrations": [
+ { "name": "nodejs-typescript-base", "category": "observability", "version": "1.0.0" },
+ { "name": "next-app", "category": "observability", "version": "16.0.0" },
+ { "name": "tailwind-v4", "category": "observability", "version": "1.0.0" },
+ { "name": "prisma", "category": "database", "version": "1.0.0" },
+ { "name": "postgres-neon", "category": "database", "version": "1.0.0" },
+ { "name": "vitest", "category": "observability", "version": "1.0.0" },
+ { "name": "eslint-prettier", "category": "observability", "version": "1.0.0" }
+ ]
 }

@@ -1,19 +1,19 @@
 {
-  "name": "postgres-local-docker",
-  "category": "database",
-  "version": "1.0.0",
-  "description": "Local Postgres 16 via docker compose. Adds docker-compose.yml with postgres service + healthcheck, and a `predev` npm-lifecycle script that starts the container and waits on pg_isready before `pnpm dev` runs. Mutually exclusive with postgres-neon — pick ONE postgres-* integration.\n\nLearning source: LuxeBook root package.json `predev` + docker-compose.yml postgres service.",
-  "depends_on_packages": {},
-  "files_owned": [
-    "docker-compose.yml"
-  ],
-  "json_merges": [
-    {
-      "file": "package.json",
-      "patch_file": "package.json"
-    }
-  ],
-  "verification": {
-    "dev": "docker --version"
-  }
+ "name": "postgres-local-docker",
+ "category": "database",
+ "version": "1.0.0",
+ "description": "Local Postgres 16 via docker compose. Adds docker-compose.yml with postgres service + healthcheck, and a `predev` npm-lifecycle script that starts the container and waits on pg_isready before `pnpm dev` runs. Mutually exclusive with postgres-neon — pick ONE postgres-* integration.\n\nPattern: production-tested.json `predev` + docker-compose.yml postgres service.",
+ "depends_on_packages": {},
+ "files_owned": [
+ "docker-compose.yml"
+ ],
+ "json_merges": [
+ {
+ "file": "package.json",
+ "patch_file": "package.json"
+ }
+ ],
+ "verification": {
+ "dev": "docker --version"
+ }
 }

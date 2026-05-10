@@ -49,7 +49,7 @@ const project = "${PROJECT_NAME}";
 
 ```
 # After substitution
-const project = "luxebook";
+const project = "my-app";
 ```
 
 No templating engine (no Handlebars, no Liquid). Just `replace_all` over `${VAR_NAME}` patterns. Keeps templates trivially auditable.
