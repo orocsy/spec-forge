@@ -1,0 +1,21 @@
+{
+  "name": "git-hooks",
+  "category": "observability",
+  "version": "1.0.0",
+  "description": "Pre-commit (lint→tsc→fast tests) and pre-push (build) git hooks. Uses git's native core.hooksPath (no husky dep). Pattern source: LuxeBook .git/hooks/pre-commit + pre-push (~/.claude/hooks).\n\nThe `prepare` npm lifecycle script (auto-runs after install) wires `.githooks/` as the hook dir for the repo. Bypass for incidents: `git commit --no-verify`.",
+  "depends_on_packages": {},
+  "files_owned": [
+    ".githooks/pre-commit",
+    ".githooks/pre-push",
+    "scripts/install-git-hooks.sh"
+  ],
+  "json_merges": [
+    {
+      "file": "package.json",
+      "patch_file": "package.json"
+    }
+  ],
+  "verification": {
+    "dev": "bash -c 'test -x .githooks/pre-commit && test -x .githooks/pre-push && echo hooks-ok'"
+  }
+}

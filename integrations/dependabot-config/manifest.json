@@ -1,0 +1,13 @@
+{
+  "name": "dependabot-config",
+  "category": "observability",
+  "version": "1.0.0",
+  "description": "GitHub Dependabot config — weekly dep updates grouped by ecosystem (npm, github-actions, docker). Free GitHub feature; PRs auto-open against main with version diffs. Pairs with github-actions-ci which validates each PR.\n\nGroups updates by minor/patch to reduce PR noise. Major bumps stay separate (force a human review).",
+  "depends_on_packages": {},
+  "files_owned": [
+    ".github/dependabot.yml"
+  ],
+  "verification": {
+    "dev": "test -f .github/dependabot.yml && echo dependabot-config-present"
+  }
+}

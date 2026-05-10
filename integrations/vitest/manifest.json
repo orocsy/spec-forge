@@ -1,0 +1,24 @@
+{
+  "name": "vitest",
+  "category": "observability",
+  "version": "1.0.0",
+  "description": "Vitest test harness with coverage. Adds vitest.config.ts and test/ directory; json-merges test scripts + devDeps + a sample test into package.json.",
+  "depends_on_integrations": ["nodejs-typescript-base"],
+  "depends_on_packages": {
+    "vitest": "^2.1.0",
+    "@vitest/coverage-v8": "^2.1.0"
+  },
+  "files_owned": [
+    "vitest.config.ts",
+    "src/__tests__/index.test.ts"
+  ],
+  "json_merges": [
+    {
+      "file": "package.json",
+      "patch_file": "package.json"
+    }
+  ],
+  "verification": {
+    "dev": "pnpm exec vitest --version"
+  }
+}

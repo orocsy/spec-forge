@@ -1,0 +1,30 @@
+{
+  "name": "observability-sentry",
+  "category": "observability",
+  "version": "1.0.0",
+  "description": "Sentry error tracking + performance monitoring. FREE TIER: 5k errors + 10k performance events / month. Adds @sentry/nextjs (auto-instruments client + server + edge). Set NEXT_PUBLIC_SENTRY_DSN + SENTRY_AUTH_TOKEN in .env.local for source-map upload.\n\nThe Sentry wizard normally runs `npx @sentry/wizard` interactively — we ship the same files it generates. Pattern source: Sentry Next.js docs.",
+  "depends_on_integrations": ["next-app"],
+  "depends_on_packages": {
+    "@sentry/nextjs": "^9.0.0"
+  },
+  "files_owned": [
+    "sentry.client.config.ts",
+    "sentry.server.config.ts",
+    "sentry.edge.config.ts"
+  ],
+  "json_merges": [
+    {
+      "file": "package.json",
+      "patch_file": "package.json"
+    }
+  ],
+  "post_install_steps": [
+    "Get a Sentry DSN at https://sentry.io (free tier).",
+    "Set NEXT_PUBLIC_SENTRY_DSN in .env.local.",
+    "For source-map upload (production), set SENTRY_AUTH_TOKEN + SENTRY_ORG + SENTRY_PROJECT.",
+    "Optionally wrap next.config.mjs with `withSentryConfig` from @sentry/nextjs (see Sentry docs)."
+  ],
+  "verification": {
+    "dev": "node -e \"import('@sentry/nextjs').then(() => console.log('sentry ok'))\""
+  }
+}

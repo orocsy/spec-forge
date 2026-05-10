@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "infra:redis:up": "docker compose -f compose.redis.yml --profile infra up -d",
+    "infra:redis:down": "docker compose -f compose.redis.yml --profile infra down",
+    "infra:all:up": "docker compose -f docker-compose.yml -f compose.redis.yml --profile infra up -d",
+    "infra:all:down": "docker compose -f docker-compose.yml -f compose.redis.yml --profile infra down"
+  },
+  "dependencies": {
+    "ioredis": "^5.4.0"
+  }
+}

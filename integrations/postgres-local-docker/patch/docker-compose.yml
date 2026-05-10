@@ -1,0 +1,28 @@
+# Local infrastructure for {{project.name}}.
+# Start with: pnpm predev (or docker compose --profile infra up -d)
+#
+# Pattern source: LuxeBook docker-compose.yml — profiles let you start
+# only the infra you need; healthcheck enables `pg_isready` polling
+# before the app talks to the DB.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: {{project.name}}-postgres
+    profiles: ["infra", "full"]
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: {{project.name}}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:

@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# pre-commit hook — enforces lint → tsc → fast unit tests on staged JS/TS files.
+# Fast-fails. Bypass for incidents: git commit --no-verify
+#
+# Pattern: LuxeBook ~/.claude/hooks/pre-commit (vendored + simplified for
+# single-package scaffolds).
+
+set -e
+
+STAGED="$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(ts|tsx|js|jsx|mjs|cjs)$' || true)"
+[[ -z "$STAGED" ]] && exit 0
+[[ ! -f package.json ]] && exit 0
+
+# --- lint (only if eslint is configured) ---
+if [[ -f eslint.config.js ]] || [[ -f eslint.config.mjs ]] || [[ -f .eslintrc.json ]] || [[ -f .eslintrc.js ]]; then
+  echo "→ pre-commit: eslint"
+  echo "$STAGED" | xargs npx --no-install eslint --quiet 2>/dev/null || {
+    echo "🛑 COMMIT BLOCKED — eslint errors. Run \`pnpm lint\` to see them."
+    echo "$STAGED" | xargs npx eslint
+    exit 1
+  }
+fi
+
+# --- tsc ---
+if [[ -f tsconfig.json ]]; then
+  echo "→ pre-commit: tsc --noEmit"
+  if ! npx --no-install tsc --noEmit 2>/dev/null; then
+    echo "🛑 COMMIT BLOCKED — TypeScript errors."
+    npx tsc --noEmit
+    exit 1
+  fi
+fi
+
+# --- fast unit tests (only if `test:fast` script is defined) ---
+if grep -q '"test:fast"' package.json 2>/dev/null; then
+  echo "→ pre-commit: test:fast"
+  npm run test:fast --silent || {
+    echo "🛑 COMMIT BLOCKED — fast tests failed."
+    exit 1
+  }
+fi
+
+echo "✅ pre-commit passed"
+exit 0

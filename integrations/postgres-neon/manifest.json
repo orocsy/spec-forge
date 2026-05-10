@@ -1,0 +1,22 @@
+{
+  "name": "postgres-neon",
+  "category": "database",
+  "version": "1.0.0",
+  "description": "Neon Postgres serverless adapter (free tier: 0.5GB storage + 1 compute hour). Adds the @neondatabase/serverless driver for edge runtimes (raw SQL over HTTP). Independent of any ORM — combine with prisma for the standard ORM workflow, or use alone for edge-native raw SQL.",
+  "depends_on_integrations": [],
+  "depends_on_packages": {
+    "@neondatabase/serverless": "^0.10.0"
+  },
+  "files_owned": [
+    "src/lib/neon.ts"
+  ],
+  "json_merges": [
+    {
+      "file": "package.json",
+      "patch_file": "package.json"
+    }
+  ],
+  "verification": {
+    "dev": "node -e \"require('@neondatabase/serverless'); console.log('neon driver ok')\""
+  }
+}

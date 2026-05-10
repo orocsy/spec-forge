@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Cancel in-flight runs for the same ref. Without this, multiple pushes to
+# main stack workflow runs and burn GitHub Actions minutes (LuxeBook saw 3
+# runs pile up on PR #60). PR-level checks live in local pre-commit hooks.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PNPM_VERSION: 9.15.0
+  NODE_VERSION: 20
+
+jobs:
+  validate:
+    name: Lint + Type-check + Test + Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install (frozen lockfile)
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+        if: ${{ hashFiles('eslint.config.js', 'eslint.config.mjs', '.eslintrc.json') != '' }}
+
+      - name: Type-check
+        run: pnpm type-check
+
+      - name: Format check
+        run: pnpm format:check
+        if: ${{ hashFiles('.prettierrc', '.prettierrc.json') != '' }}
+
+      - name: Test
+        run: pnpm test
+        if: ${{ hashFiles('vitest.config.ts', 'vitest.config.mjs', 'jest.config.ts') != '' }}
+
+      - name: Build
+        run: pnpm build

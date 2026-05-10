@@ -1,0 +1,32 @@
+{
+  "name": "ai-sdk",
+  "category": "ai",
+  "version": "1.0.0",
+  "description": "Vercel AI SDK (the SDK is FREE and OSS — MIT — even though Vercel hosts a separate paid AI Gateway). Multi-provider: swap between OpenAI / Anthropic / OpenRouter / Ollama / Google by changing one line.\n\nDefault provider: OpenRouter (single API key gives access to hundreds of models including FREE ones — Llama 3.1, Mistral 7B, Gemma, etc.). Easy migration: change the import + env var.\n\nFor truly free local dev: install Ollama (https://ollama.com), pull a model (`ollama pull llama3.2`), and uncomment the ollama block in src/lib/ai.ts. No API key, no rate limits, runs on your machine.",
+  "depends_on_integrations": ["next-app"],
+  "depends_on_packages": {
+    "ai": "^5.0.0",
+    "@openrouter/ai-sdk-provider": "^0.7.0"
+  },
+  "files_owned": [
+    "src/lib/ai.ts",
+    "src/app/api/chat/route.ts"
+  ],
+  "json_merges": [
+    {
+      "file": "package.json",
+      "patch_file": "package.json"
+    }
+  ],
+  "post_install_steps": [
+    "Pick a provider:",
+    "  • OpenRouter (free models): https://openrouter.ai → set OPENROUTER_API_KEY",
+    "  • OpenAI: https://platform.openai.com → set OPENAI_API_KEY",
+    "  • Anthropic: https://console.anthropic.com → set ANTHROPIC_API_KEY",
+    "  • Ollama (local, free): install from https://ollama.com → set OLLAMA_BASE_URL=http://localhost:11434",
+    "Test the example route: curl -X POST http://localhost:3000/api/chat -d '{\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}]}'"
+  ],
+  "verification": {
+    "dev": "node -e \"import('ai').then(() => console.log('ai sdk ok'))\""
+  }
+}

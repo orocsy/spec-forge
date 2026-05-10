@@ -1,0 +1,14 @@
+{
+  "name": "analytics-umami",
+  "category": "observability",
+  "version": "1.0.0",
+  "description": "Umami — privacy-friendly, cookieless web analytics. Two options: (a) FREE Umami Cloud (10k events/mo on the hobby plan, no credit card) or (b) self-host on any Postgres instance. Adds a single tracking script tag to the root layout via fence-marker.\n\nNo PII collected — GDPR-friendly out of the box. After scaffold: create a website at https://cloud.umami.is and set NEXT_PUBLIC_UMAMI_WEBSITE_ID in .env.local.",
+  "depends_on_integrations": ["next-app"],
+  "depends_on_packages": {},
+  "files_owned": [
+    "src/components/UmamiAnalytics.tsx"
+  ],
+  "verification": {
+    "dev": "test -f src/components/UmamiAnalytics.tsx && echo umami-component-present"
+  }
+}

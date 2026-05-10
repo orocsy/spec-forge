@@ -1,0 +1,24 @@
+{
+  "meta": {
+    "name": "todo-cli",
+    "description": "tiny TypeScript CLI app produced end-to-end by dev-pipeline bootstrap",
+    "version": "0.1.0",
+    "spec_schema_version": 1
+  },
+  "features": [
+    {
+      "id": "F1",
+      "title": "print hello on start",
+      "done_when": ["running `node dist/index.js` prints the project name"]
+    },
+    {
+      "id": "F2",
+      "title": "lint passes on a fresh checkout",
+      "done_when": ["`pnpm lint` exits 0 with no warnings on the generated code"]
+    }
+  ],
+  "integrations": [
+    { "name": "nodejs-typescript-base", "category": "observability", "version": "1.0.0" },
+    { "name": "eslint-prettier", "category": "observability", "version": "1.0.0" }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "name": "playwright-smoke",
+    "description": "Smallest spec that exercises the playwright-e2e integration. Day 6 live smoke target.",
+    "version": "0.1.0",
+    "spec_schema_version": 1
+  },
+  "integrations": [
+    { "name": "nodejs-typescript-base", "category": "observability", "version": "1.0.0" },
+    { "name": "next-app",                "category": "observability", "version": "16.0.0" },
+    { "name": "playwright-e2e",          "category": "observability", "version": "1.0.0" },
+    { "name": "eslint-prettier",         "category": "observability", "version": "1.0.0" }
+  ]
+}

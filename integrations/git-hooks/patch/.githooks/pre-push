@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+# pre-push hook — enforces TWO gates:
+#   1. build passes
+#   2. doc-update guard: any push that includes substantive non-test code
+#      changes must also touch at least one tracked *.md file
+#
+# Bypasses (incidents only — audit-logged):
+#   SKIP_BUILD_GATE=1 git push       # skip build only
+#   SKIP_DOC_GUARD=1  git push       # skip doc-update only
+#
+# Pattern: LuxeBook ~/.claude/hooks/pre-push lines 60–90
+# (LuxeBook learning: "docs stay in sync with code at all times" — the
+# guard catches features shipped without an execution-doc tick).
+
+set -e
+
+OVERRIDE_LOG=".git/.push-overrides.log"
+HEAD_SHA="$(git rev-parse HEAD 2>/dev/null || echo 'unknown')"
+BRANCH="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo 'unknown')"
+log_override() {
+  printf '%s  sha=%s  branch=%s  user=%s  reason=%s\n' \
+    "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$HEAD_SHA" "$BRANCH" "${USER:-unknown}" "$1" \
+    >> "$OVERRIDE_LOG"
+}
+
+# ── Gate 1: build ─────────────────────────────────────────────────
+if [[ "${SKIP_BUILD_GATE:-0}" == "1" ]]; then
+  log_override "build-gate-skipped"
+  echo "⚠️  PUSH OVERRIDE — build gate skipped (logged to $OVERRIDE_LOG)"
+elif [[ -f package.json ]] && grep -q '"build"' package.json 2>/dev/null; then
+  echo "→ pre-push: pnpm build"
+  if ! pnpm build > /tmp/.push-build.log 2>&1; then
+    echo "🛑 PUSH BLOCKED — build failed. See:"
+    tail -50 /tmp/.push-build.log
+    echo ""
+    echo "Override (incidents only): SKIP_BUILD_GATE=1 git push"
+    exit 1
+  fi
+  echo "✅ pre-push: build passed"
+fi
+
+# ── Gate 2: doc-update guard ──────────────────────────────────────
+# "Substantive" code paths — extend as your repo grows. Mechanical-only
+# paths are exempt: tests (*.spec.*, *.test.*), migrations (*.sql),
+# lockfiles, .gitignore.
+SUBSTANTIVE_RE='\.(ts|tsx|js|jsx|py|go|rs|java|rb|php|swift|kt|cs|cpp|c|h)$'
+MECHANICAL_RE='(\.(spec|test)\.(ts|tsx|js|jsx)$|\.sql$|^pnpm-lock\.yaml$|^package-lock\.json$|^yarn\.lock$|^\.gitignore$)'
+
+if [[ "${SKIP_DOC_GUARD:-0}" == "1" ]]; then
+  log_override "doc-guard-skipped"
+  echo "⚠️  PUSH OVERRIDE — doc guard skipped (logged to $OVERRIDE_LOG)"
+  exit 0
+fi
+
+# Find the merge-base with the upstream branch (or use HEAD~1 as fallback).
+UPSTREAM="$(git rev-parse --abbrev-ref --symbolic-full-name "@{u}" 2>/dev/null || echo '')"
+if [[ -n "$UPSTREAM" ]]; then
+  BASE="$(git merge-base HEAD "$UPSTREAM" 2>/dev/null || echo 'HEAD~1')"
+else
+  BASE='HEAD~1'
+fi
+
+# Files changed in the push range
+CHANGED="$(git diff --name-only "$BASE" HEAD 2>/dev/null || echo '')"
+[[ -z "$CHANGED" ]] && exit 0  # nothing to push (e.g. force-push of same SHA)
+
+# Substantive code touched?
+SUBSTANTIVE_HITS=$(echo "$CHANGED" | grep -E "$SUBSTANTIVE_RE" | grep -vE "$MECHANICAL_RE" || true)
+DOC_HITS=$(echo "$CHANGED" | grep -E '\.md$' || true)
+
+if [[ -n "$SUBSTANTIVE_HITS" && -z "$DOC_HITS" ]]; then
+  echo "🛑 PUSH BLOCKED — substantive code changes ship without a doc update."
+  echo ""
+  echo "Files that triggered the guard:"
+  echo "$SUBSTANTIVE_HITS" | sed 's/^/  /'
+  echo ""
+  echo "Tick at least one *.md (e.g. CHANGELOG.md, README.md, an execution doc),"
+  echo "or override for incidents: SKIP_DOC_GUARD=1 git push"
+  exit 1
+fi
+
+[[ -n "$SUBSTANTIVE_HITS$DOC_HITS" ]] && echo "✅ pre-push: doc-update guard passed"
+exit 0

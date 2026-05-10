@@ -1,0 +1,23 @@
+{
+  "name": "prisma",
+  "category": "database",
+  "version": "1.0.0",
+  "description": "Prisma 6 ORM. Adds prisma/schema.prisma and src/lib/db.ts (singleton client). Expects DATABASE_URL in .env. Pairs with postgres-neon for Neon Postgres.",
+  "depends_on_packages": {
+    "@prisma/client": "^6.0.0",
+    "prisma": "^6.0.0"
+  },
+  "files_owned": [
+    "prisma/schema.prisma",
+    "src/lib/db.ts"
+  ],
+  "json_merges": [
+    {
+      "file": "package.json",
+      "patch_file": "package.json"
+    }
+  ],
+  "verification": {
+    "dev": "pnpm exec prisma --version"
+  }
+}

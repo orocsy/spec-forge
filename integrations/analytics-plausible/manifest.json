@@ -1,0 +1,14 @@
+{
+  "name": "analytics-plausible",
+  "category": "observability",
+  "version": "1.0.0",
+  "description": "Plausible Analytics — privacy-friendly, cookieless. Alternative to analytics-umami.\n\nPricing trade-off vs Umami:\n  • Plausible Cloud: $9/mo for 10k pageviews (no free tier; 30-day trial). Self-host: free (AGPL).\n  • Umami Cloud: free 10k events/mo. Self-host: free (MIT).\n\nPick Plausible when: you want a more polished UI, willing to pay for hosted, OR plan to self-host on your own infra. Pick Umami when: you want free hosted, basic stats are enough.\n\nNo cookie banner needed (no PII collected). GDPR/CCPA-clean. Script <1KB. Mutually exclusive with analytics-umami — pick ONE.",
+  "depends_on_integrations": ["next-app"],
+  "depends_on_packages": {},
+  "files_owned": [
+    "src/components/PlausibleAnalytics.tsx"
+  ],
+  "verification": {
+    "dev": "test -f src/components/PlausibleAnalytics.tsx && echo plausible-component-present"
+  }
+}

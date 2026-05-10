@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "name": "localdev-demo",
+    "description": "Local-dev fullstack: Next 16 + Prisma + LOCAL Postgres (docker) + Tailwind 4 + Vitest + ESLint + git-hooks",
+    "version": "0.1.0",
+    "spec_schema_version": 1
+  },
+  "integrations": [
+    { "name": "nodejs-typescript-base", "category": "observability", "version": "1.0.0" },
+    { "name": "next-app",                "category": "observability", "version": "16.0.0" },
+    { "name": "tailwind-v4",             "category": "observability", "version": "1.0.0" },
+    { "name": "prisma",                  "category": "database",      "version": "1.0.0" },
+    { "name": "postgres-local-docker",   "category": "database",      "version": "1.0.0" },
+    { "name": "vitest",                  "category": "observability", "version": "1.0.0" },
+    { "name": "eslint-prettier",         "category": "observability", "version": "1.0.0" },
+    { "name": "git-hooks",               "category": "observability", "version": "1.0.0" }
+  ]
+}

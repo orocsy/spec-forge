@@ -1,0 +1,21 @@
+{
+  "name": "email-resend",
+  "category": "email",
+  "version": "1.0.0",
+  "description": "Resend transactional email — FREE TIER: 3000 emails/month + 1 custom domain. Adds src/lib/email.ts with a typed `sendEmail(to, subject, html)` helper. After scaffold: get an API key at https://resend.com and set RESEND_API_KEY in .env.local.",
+  "depends_on_packages": {
+    "resend": "^4.0.0"
+  },
+  "files_owned": [
+    "src/lib/email.ts"
+  ],
+  "json_merges": [
+    {
+      "file": "package.json",
+      "patch_file": "package.json"
+    }
+  ],
+  "verification": {
+    "dev": "node -e \"import('resend').then(() => console.log('resend ok'))\""
+  }
+}

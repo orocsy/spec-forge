@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+/* Customize Tailwind v4 via CSS. Example:
+ *   @theme {
+ *     --color-brand-500: #3b82f6;
+ *     --font-display: "Inter Variable", sans-serif;
+ *   }
+ *
+ * Variants and utilities can be defined inline:
+ *   @utility content-auto { content-visibility: auto; }
+ */
+
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  @apply font-sans antialiased;
+}

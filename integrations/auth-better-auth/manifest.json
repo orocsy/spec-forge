@@ -1,0 +1,29 @@
+{
+  "name": "auth-better-auth",
+  "category": "auth",
+  "version": "1.0.0",
+  "description": "better-auth — framework-agnostic authentication for TypeScript. Email/password by default; pluggable social providers (Google, GitHub, etc.). FREE OSS, no vendor lock-in. Adds src/lib/auth.ts (server) + src/lib/auth-client.ts (browser) + Next.js route handler at /api/auth/[...all]/route.ts. Pairs with prisma for the user/session/account tables.\n\nAfter scaffold: run `pnpm exec better-auth migrate` (or `pnpm db:push`) to create the auth tables, then set BETTER_AUTH_SECRET in .env.local.",
+  "depends_on_integrations": ["next-app", "prisma"],
+  "depends_on_packages": {
+    "better-auth": "^1.3.0"
+  },
+  "files_owned": [
+    "src/lib/auth.ts",
+    "src/lib/auth-client.ts",
+    "src/app/api/auth/[...all]/route.ts"
+  ],
+  "json_merges": [
+    {
+      "file": "package.json",
+      "patch_file": "package.json"
+    }
+  ],
+  "post_install_steps": [
+    "Generate auth tables in your DB: `pnpm exec better-auth generate` then `pnpm db:push`",
+    "Set BETTER_AUTH_SECRET in .env.local (generate with: openssl rand -base64 32)",
+    "Optional: enable social providers (Google/GitHub) by adding their client id/secret to .env.local and uncommenting the providers block in src/lib/auth.ts"
+  ],
+  "verification": {
+    "dev": "node -e \"import('better-auth').then(() => console.log('better-auth ok'))\""
+  }
+}

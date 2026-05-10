@@ -1,0 +1,13 @@
+{
+  "name": "github-actions-ci",
+  "category": "observability",
+  "version": "1.0.0",
+  "description": "GitHub Actions CI: validate (lint + type-check + test + build) on push to main + manual dispatch. Uses pnpm cache, --frozen-lockfile, Node 20. Pattern source: LuxeBook .github/workflows/deploy.yml validate job.\n\nDeliberately runs on PUSH only (not PR triggers) — local pre-commit + pre-push hooks (git-hooks integration) catch issues before they reach the PR, saving GitHub Actions minutes.",
+  "depends_on_packages": {},
+  "files_owned": [
+    ".github/workflows/ci.yml"
+  ],
+  "verification": {
+    "dev": "test -f .github/workflows/ci.yml && echo workflow-present"
+  }
+}

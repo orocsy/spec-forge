@@ -1,0 +1,24 @@
+# Redis service for {{project.name}} — separate compose file so it
+# combines cleanly with the main docker-compose.yml owned by
+# postgres-local-docker.
+#
+# Start standalone: docker compose -f compose.redis.yml --profile infra up -d
+# Combine with postgres: pnpm infra:all:up
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: {{project.name}}-redis
+    profiles: ["infra", "full"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  redis_data:

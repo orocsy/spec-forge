@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "name": "production-demo",
+    "description": "Production-ready Next.js 16 SaaS scaffold: Prisma + Neon Postgres + Tailwind 4 + Vitest + ESLint + Better-Auth + Sentry + Resend + Umami + Vercel deploy + GitHub Actions CI + git hooks. All free-tier services, no vendor lock-in beyond Vercel for hosting (which has a generous free tier and easy migration to self-hosted Docker).",
+    "version": "0.1.0",
+    "spec_schema_version": 1
+  },
+  "features": [
+    {
+      "id": "F1",
+      "title": "user can sign up + sign in with email/password",
+      "done_when": ["POST /api/auth/sign-up creates a user; POST /api/auth/sign-in returns a session"]
+    },
+    {
+      "id": "F2",
+      "title": "production observability — errors auto-reported to Sentry, page views tracked in Umami",
+      "done_when": ["thrown errors appear in Sentry within 30s", "page views show in Umami dashboard"]
+    },
+    {
+      "id": "F3",
+      "title": "transactional email sends via Resend",
+      "done_when": ["sendEmail() helper delivers a test email to the inbox"]
+    },
+    {
+      "id": "F4",
+      "title": "CI gates and local hooks block bad pushes",
+      "done_when": ["GitHub Actions CI runs lint+tsc+test+build on every push to main", "git pre-commit blocks commit on lint/tsc errors", "git pre-push blocks push on build failure"]
+    }
+  ],
+  "integrations": [
+    { "name": "nodejs-typescript-base", "category": "observability", "version": "1.0.0" },
+    { "name": "next-app",                "category": "observability", "version": "16.0.0" },
+    { "name": "tailwind-v4",             "category": "observability", "version": "1.0.0" },
+    { "name": "prisma",                  "category": "database",      "version": "1.0.0" },
+    { "name": "postgres-neon",           "category": "database",      "version": "1.0.0" },
+    { "name": "auth-better-auth",        "category": "auth",          "version": "1.0.0" },
+    { "name": "email-resend",            "category": "email",         "version": "1.0.0" },
+    { "name": "observability-sentry",    "category": "observability", "version": "1.0.0" },
+    { "name": "analytics-umami",         "category": "observability", "version": "1.0.0" },
+    { "name": "vitest",                  "category": "observability", "version": "1.0.0" },
+    { "name": "eslint-prettier",         "category": "observability", "version": "1.0.0" },
+    { "name": "git-hooks",               "category": "observability", "version": "1.0.0" },
+    { "name": "github-actions-ci",       "category": "observability", "version": "1.0.0" },
+    { "name": "vercel-deploy",           "category": "observability", "version": "1.0.0" }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "tailwind-v4",
+  "category": "observability",
+  "version": "1.0.0",
+  "description": "Tailwind CSS v4 with the new CSS-first config (no tailwind.config.js needed). Adds globals.css with @import 'tailwindcss' and a postcss config. Pairs with next-15-app or any other framework.",
+  "depends_on_packages": {
+    "tailwindcss": "^4.0.0",
+    "@tailwindcss/postcss": "^4.0.0",
+    "postcss": "^8.4.0"
+  },
+  "files_owned": [
+    "postcss.config.mjs",
+    "src/app/globals.css"
+  ],
+  "json_merges": [
+    {
+      "file": "package.json",
+      "patch_file": "package.json"
+    }
+  ],
+  "verification": {
+    "dev": "node -e \"import('@tailwindcss/postcss').then(() => console.log('tailwind v4 postcss plugin ok'))\""
+  }
+}

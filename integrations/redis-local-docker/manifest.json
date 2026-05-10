@@ -1,0 +1,22 @@
+{
+  "name": "redis-local-docker",
+  "category": "observability",
+  "version": "1.0.0",
+  "description": "Local Redis 7 via docker compose. Adds compose.redis.yml (separate file so it composes cleanly with postgres-local-docker), src/lib/redis.ts (singleton ioredis client), and infra:redis:* npm scripts. Pattern source: LuxeBook docker-compose.yml redis service.\n\nWhy a separate compose file? It lets postgres-local-docker own docker-compose.yml without fence-merge complexity. To start both: `pnpm infra:up` (postgres) + `pnpm infra:redis:up` — or use the combined script.",
+  "depends_on_packages": {
+    "ioredis": "^5.4.0"
+  },
+  "files_owned": [
+    "compose.redis.yml",
+    "src/lib/redis.ts"
+  ],
+  "json_merges": [
+    {
+      "file": "package.json",
+      "patch_file": "package.json"
+    }
+  ],
+  "verification": {
+    "dev": "node -e \"import('ioredis').then(() => console.log('ioredis ok'))\""
+  }
+}

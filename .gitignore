@@ -1,0 +1,33 @@
+# dependencies
+node_modules
+.pnpm-store
+
+# build / TS
+dist
+*.tsbuildinfo
+
+# coverage
+coverage
+
+# editors / OS
+.DS_Store
+.idea
+.vscode
+*.swp
+*.swo
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# runtime artifacts produced by running the CLI from the repo root
+*.journal.jsonl
+test-results/
+playwright-report/
+playwright/.cache/
+
+# scratch
+.scratch/
+tmp/

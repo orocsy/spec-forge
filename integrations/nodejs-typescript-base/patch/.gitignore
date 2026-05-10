@@ -1,0 +1,38 @@
+# Dependencies (LuxeBook pattern: include .pnpm-store for monorepos)
+node_modules
+.pnpm-store
+
+# Build outputs
+dist
+.next
+.turbo
+out
+*.tsbuildinfo
+
+# Environment files
+# Pattern: ignore all .env* EXCEPT the committed .env.example template.
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea
+.vscode
+*.swp
+*.swo
+
+# Test artifacts
+coverage
+test-results
+playwright-report
+.playwright

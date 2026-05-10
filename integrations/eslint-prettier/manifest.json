@@ -1,0 +1,28 @@
+{
+  "name": "eslint-prettier",
+  "category": "observability",
+  "version": "1.0.0",
+  "description": "ESLint + Prettier config for TypeScript projects. Adds .eslintrc.json, .prettierrc.json, and json-merges scripts + devDependencies into package.json.",
+  "depends_on_integrations": ["nodejs-typescript-base"],
+  "depends_on_packages": {
+    "eslint": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "prettier": "^3.0.0",
+    "eslint-config-prettier": "^9.0.0"
+  },
+  "files_owned": [
+    "eslint.config.js",
+    ".prettierrc.json",
+    ".prettierignore"
+  ],
+  "json_merges": [
+    {
+      "file": "package.json",
+      "patch_file": "package.json"
+    }
+  ],
+  "verification": {
+    "dev": "pnpm exec eslint --version && pnpm exec prettier --version"
+  }
+}

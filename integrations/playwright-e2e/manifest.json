@@ -1,0 +1,18 @@
+{
+  "name": "playwright-e2e",
+  "category": "observability",
+  "version": "1.0.0",
+  "description": "Playwright E2E harness, headed-by-default. Adds playwright.config.ts with trace + screenshot on failure, a step-screenshot helper (LuxeBook ws2-walkthrough pattern), and a sample homepage spec. Scripts: test:e2e (headed by default; LuxeBook learning Apr 14 — user wants to WATCH the flow, not trust green checkmarks).",
+  "json_merges": [{ "file": "package.json", "patch_file": "package.json" }],
+  "files_owned": [
+    "playwright.config.ts",
+    "tests/e2e/homepage.spec.ts",
+    "tests/helpers/step.ts"
+  ],
+  "depends_on_packages": {
+    "@playwright/test": "^1.49.0"
+  },
+  "verification": {
+    "dev": "pnpm exec playwright --version"
+  }
+}

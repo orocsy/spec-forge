@@ -1,0 +1,29 @@
+{
+  "name": "auth-clerk",
+  "category": "auth",
+  "version": "1.0.0",
+  "description": "Clerk hosted auth — alternative to better-auth. FREE up to 10,000 monthly active users (MAU); paid plans from $25/mo + $0.02/MAU above 10k. Drop-in <SignInButton /> + <UserButton /> components, social providers via dashboard, organizations + RBAC built-in.\n\nTrade-off vs better-auth: faster to ship (5 min), polished UI out-of-box, BUT users live on Clerk's servers — exporting later requires Clerk's data export API. Pick this when (a) you need to ship a paid product fast, (b) <10k MAU is plausible, (c) you don't want to build sign-in UI yourself.\n\nMutually exclusive with auth-better-auth — pick ONE.",
+  "depends_on_integrations": ["next-app"],
+  "depends_on_packages": {
+    "@clerk/nextjs": "^6.0.0"
+  },
+  "files_owned": [
+    "src/middleware.ts"
+  ],
+  "json_merges": [
+    {
+      "file": "package.json",
+      "patch_file": "package.json"
+    }
+  ],
+  "post_install_steps": [
+    "Sign up at https://clerk.com (free up to 10k MAU)",
+    "Create an application; copy Publishable Key + Secret Key",
+    "Set NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY + CLERK_SECRET_KEY in .env.local",
+    "Wrap your root layout in <ClerkProvider> (see https://clerk.com/docs/quickstarts/nextjs)",
+    "Add <SignInButton /> + <UserButton /> from @clerk/nextjs to your header"
+  ],
+  "verification": {
+    "dev": "node -e \"import('@clerk/nextjs').then(() => console.log('clerk ok'))\""
+  }
+}

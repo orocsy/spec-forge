@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "predev": "docker compose --profile infra up -d && echo 'Waiting for PostgreSQL...' && until docker compose exec postgres pg_isready -U postgres > /dev/null 2>&1; do sleep 1; done && echo 'Postgres ready.'",
+    "infra:up": "docker compose --profile infra up -d",
+    "infra:down": "docker compose --profile infra down",
+    "infra:logs": "docker compose --profile infra logs -f"
+  }
+}

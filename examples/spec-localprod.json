@@ -1,0 +1,26 @@
+{
+  "meta": {
+    "name": "localprod-demo",
+    "description": "Day 5 variant: better-auth + Plausible analytics + local Postgres+Redis + Dockerfile for self-host + dependabot. Tests the day-5 integrations end-to-end.",
+    "version": "0.1.0",
+    "spec_schema_version": 1
+  },
+  "integrations": [
+    { "name": "nodejs-typescript-base", "category": "observability", "version": "1.0.0" },
+    { "name": "next-app",                "category": "observability", "version": "16.0.0" },
+    { "name": "tailwind-v4",             "category": "observability", "version": "1.0.0" },
+    { "name": "prisma",                  "category": "database",      "version": "1.0.0" },
+    { "name": "postgres-local-docker",   "category": "database",      "version": "1.0.0" },
+    { "name": "redis-local-docker",      "category": "observability", "version": "1.0.0" },
+    { "name": "auth-better-auth",        "category": "auth",          "version": "1.0.0" },
+    { "name": "analytics-plausible",     "category": "observability", "version": "1.0.0" },
+    { "name": "email-resend",            "category": "email",         "version": "1.0.0" },
+    { "name": "observability-sentry",    "category": "observability", "version": "1.0.0" },
+    { "name": "vitest",                  "category": "observability", "version": "1.0.0" },
+    { "name": "eslint-prettier",         "category": "observability", "version": "1.0.0" },
+    { "name": "git-hooks",               "category": "observability", "version": "1.0.0" },
+    { "name": "github-actions-ci",       "category": "observability", "version": "1.0.0" },
+    { "name": "dockerfile-deploy",       "category": "observability", "version": "1.0.0" },
+    { "name": "dependabot-config",       "category": "observability", "version": "1.0.0" }
+  ]
+}
