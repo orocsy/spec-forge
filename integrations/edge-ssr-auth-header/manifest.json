@@ -1,0 +1,24 @@
+{
+  "name": "edge-ssr-auth-header",
+  "category": "security",
+  "version": "1.0.0",
+  "description": "Shared-secret header between SSR origin (Vercel / Netlify / etc) and CDN edge (Cloudflare / AWS WAF / Fastly), used to let SSR fetches skip CDN bot-mitigation that would otherwise challenge them.\n\nWhy you want this: Next.js SSR functions make API fetches from generic node-fetch UAs on shared CDN egress IPs. CDN bot management routinely challenges this traffic, surfacing as HTTP 000 / dropped connections / silent 4xx for the SSR — which then becomes a visible 404 (or fallback shell) for the end user. This integration ships the SSR-side helper so requests carry an identifying header; you configure your CDN's WAF to skip challenges when the header matches a shared secret.\n\nReal incident this pattern came from: a Next.js + Cloudflare-fronted EC2 API setup (2026-05). Customer-facing tenant pages 404'd intermittently because Cloudflare bot-challenged the SSR. The fix: this header + a Cloudflare WAF Skip rule. Full post-mortem in docs/edge-ssr-auth-header.md.\n\nOpt-in by design. Only adds value when (1) you have an API behind a bot-managed CDN AND (2) SSR is the primary entry point for that API. If you're using Vercel + Neon (no CDN in front of Neon), skip this integration.",
+  "depends_on_integrations": ["next-app"],
+  "depends_on_packages": {},
+  "files_owned": [
+    "src/lib/internal-api-headers.ts",
+    "src/lib/__tests__/internal-api-headers.test.ts",
+    "docs/edge-ssr-auth-header.md"
+  ],
+  "json_merges": [],
+  "post_install_steps": [
+    "Generate a strong secret: `openssl rand -hex 32`",
+    "Set INTERNAL_API_TOKEN as a SERVER-SIDE env var on your hosting platform (Vercel: Project Settings → Environment Variables; do NOT prefix NEXT_PUBLIC_, do NOT enable for browser exposure). Scopes: Production + Preview.",
+    "Configure your CDN's WAF rule to skip bot-mitigation when `http.request.headers[\"x-internal-token\"]` matches the same secret. Click-path + curl examples for Cloudflare are in docs/edge-ssr-auth-header.md.",
+    "Verify: run a tight curl loop against a known-real URL that exercises SSR; expect 100% HTTP 200 instead of intermittent 4xx / fallback shells.",
+    "Wire the helper into SSR data fetchers: `const headers = getInternalApiHeaders(); await fetch(url, { headers });` — see the docstring inside the helper for the rationale + the call sites you should cover."
+  ],
+  "verification": {
+    "dev": "node -e \"const m = require('./src/lib/internal-api-headers'); if (typeof m.getInternalApiHeaders !== 'function') { throw new Error('helper missing'); } console.log('edge-ssr-auth-header ok');\""
+  }
+}
