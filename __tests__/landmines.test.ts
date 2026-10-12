@@ -376,3 +376,55 @@ describe('landmine: integration set installs and verifies cleanly (smoke)', () =
  expect(all).toHaveLength(21);
  });
 });
+
+describe('landmine: indentation-sensitive templates keep their nesting', () => {
+  it('every YAML template nests in two-space steps (a bulk edit once flattened them to one space)', async () => {
+    const files = (await fs.readdir(REGISTRY, { recursive: true }))
+      .map(String)
+      .filter((f) => /\.ya?ml$/.test(f));
+    expect(files.length).toBeGreaterThan(0);
+    for (const file of files) {
+      const text = await fs.readFile(join(REGISTRY, file), 'utf8');
+      const indents = text
+        .split('\n')
+        .filter((line) => line.trim() !== '' && !line.trim().startsWith('#'))
+        .map((line) => (line.match(/^ */) as RegExpMatchArray)[0].length);
+      expect(
+        indents.every((n) => n % 2 === 0),
+        `${file}: a line sits at an odd indent`,
+      ).toBe(true);
+      expect(Math.max(...indents) >= 4, `${file}: nothing is nested`).toBe(true);
+    }
+  });
+
+  it('the CI workflow nests its triggers and steps where GitHub Actions reads them', async () => {
+    const i = await loadIntegration(join(REGISTRY, 'github-actions-ci'));
+    const wf = await fs.readFile(join(i.dir, 'patch', '.github/workflows/ci.yml'), 'utf8');
+    expect(wf).toMatch(/^on:\n {2}push:\n {4}branches: \[main\]/m);
+    expect(wf).toMatch(/^jobs:\n {2}validate:\n/m);
+    expect(wf).toMatch(/^ {4}steps:\n {6}- name: Checkout/m);
+  });
+});
+
+describe('landmine: a hung install cannot eat the whole CI job', () => {
+  it('the install step has its own timeout, shorter than the job', async () => {
+    const i = await loadIntegration(join(REGISTRY, 'github-actions-ci'));
+    const wf = await fs.readFile(join(i.dir, 'patch', '.github/workflows/ci.yml'), 'utf8');
+    const job = Number(/^ {4}timeout-minutes: (\d+)/m.exec(wf)?.[1]);
+    const install = Number(
+      /- name: Install \(frozen lockfile\)\n(?: {8}#.*\n)* {8}timeout-minutes: (\d+)/.exec(wf)?.[1],
+    );
+    expect(install).toBeGreaterThan(0);
+    expect(install).toBeLessThan(job);
+  });
+});
+
+describe('landmine: nobody can tell which release is live', () => {
+  it('next-app serves /api/health with the release id it was built from', async () => {
+    const i = await loadIntegration(join(REGISTRY, 'next-app'));
+    expect(i.manifest.files_owned).toContain('src/app/api/health/route.ts');
+    const route = await fs.readFile(join(i.dir, 'patch', 'src/app/api/health/route.ts'), 'utf8');
+    expect(route).toMatch(/export function GET\(/);
+    expect(route).toMatch(/releaseId:\s*process\.env\.VERCEL_GIT_COMMIT_SHA \?\? process\.env\.GIT_SHA/);
+  });
+});

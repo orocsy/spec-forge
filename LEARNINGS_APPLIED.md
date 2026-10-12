@@ -50,11 +50,22 @@ impossible to ship by default.
 | 20 | GitHub Actions `${{ … }}` substitution syntax mistaken for the scaffold's `{{ var }}` placeholder syntax | Placeholder regex uses negative lookbehind `(?<!\$)` to skip `$`-prefixed expressions | `landmines.test.ts` → 2 assertions |
 | 21 | E2E selectors silently drift after a UI refactor (the `[data-testid="phone"]` → `[name="phone-number"]` class of bug) | The `step()` helper in `playwright-e2e` attaches a screenshot per call so trace viewer makes the drift visible | (defensive — caller-side discipline still required) |
 | 22 | "Build before claiming success" — green unit tests don't mean it ships | Default scaffold-output package.json runs `tsc --noEmit` separately from `build`; `pre-push` hook gates on `pnpm build` | row 3 + row 16 |
+| 23 | A bulk text edit (the open-source sanitize pass) flattened every template to one-space indentation; YAML is indentation-sensitive, so the generated CI workflow and `docker-compose.yml` lost their nesting while every string-matching test stayed green | `github-actions-ci` and `postgres-local-docker` templates restored to two-space nesting | `landmines.test.ts` → `landmine: indentation-sensitive templates keep their nesting` (every `*.yml` nests in two-space steps; CI triggers and steps where Actions reads them) |
+| 24 | A hung install (registry stall, browser download) eats the whole CI job's time and reads as a test failure | `github-actions-ci` install step carries its own `timeout-minutes: 5`, shorter than the job | `landmines.test.ts` → `landmine: a hung install cannot eat the whole CI job` |
+| 25 | Nobody can tell which release is live — the deploy log says what was sent, not what is serving | `next-app` ships `src/app/api/health/route.ts` returning `releaseId` (VERCEL_GIT_COMMIT_SHA / GIT_SHA) and `buildTime` | `landmines.test.ts` → `landmine: nobody can tell which release is live` |
 
 ## Landmines STILL NOT YET in the scaffold
 
 | Landmine | Where it should land |
 |----------|----------------------|
+| A deploy workflow re-runs the whole test suite after CI already passed (an hour per deploy) | A future deploy workflow integration: deploy `needs`/`workflow_run` on CI success instead of re-testing |
+| Post-deploy browser tests hit the deploy job's time limit and mark a good deploy cancelled | Same: a separate post-deploy job with its own limit |
+| A dispatched read-only E2E run shares the deploy concurrency group; a push cancels it while pending | Same: separate concurrency group for read-only runs |
+| Environment branch policy rejects a dispatched run from a feature branch, discovered only at run time | Same: document allowed refs; fail early with a clear message |
+| Dispatch-only smoke suites go stale silently | `playwright-e2e` once it ships a workflow: weekly `schedule:` for every dispatch-only suite |
+| Smoke cleanup swallows errors and hides real server bugs | `playwright-e2e`: a cleanup helper that logs and counts failures |
+| Schema registry and provisioned tables drift (missing collection → list 500) | Data integrations: a generated parity test between models and provisioning |
+| Retried-then-passed (flaky) tests hidden in a green run | `playwright-e2e`: a reporter that counts flaky tests separately |
 | App-domain timezone formatting (server-authoritative date strings, frontend reads pre-formatted labels) | Documentation in a future `nestjs-api` or `node-server` integration; not encoded in the scaffold itself because it's app-logic |
 | Library-first reflex (no hand-rolled regex for hex/url/date/json/phone) | Documented in `PREFLIGHT_CHECKLIST.md`; not enforceable mechanically |
 | External-credentials-first (surface every API key required at G1 of planning, not when the integration runs) | Future `setup-keys.sh` script in scaffolded projects + a "claim free tiers" interactive checklist |

@@ -13,7 +13,8 @@
     "next.config.mjs",
     "next-env.d.ts",
     "src/app/layout.tsx",
-    "src/app/page.tsx"
+    "src/app/page.tsx",
+    "src/app/api/health/route.ts"
   ],
   "json_merges": [
     {
